@@ -4,17 +4,17 @@ import api from "../../api/api";
 export const admin_login = createAsyncThunk(
   "auth/admin_login",
   async (info, { rejectWithValue, fulfillWithValue }) => {
-    console.log(info);
+    console.log("info", info);
     try {
-      // const { data } = await api.post("/admin-login", info, {
-      //   withCredentials: true,
-      // });
+      const { data } = await api.post("/admin-login", info, {
+        withCredentials: true,
+      });
       // localStorage.setItem("accessToken", data.token);
-      // console.log(data)
+      console.log(data);
       // return fulfillWithValue(data);
     } catch (error) {
-      // console.log(error.response.data)
-      return rejectWithValue(error.response.data);
+      console.log(error.response.data);
+      // return rejectWithValue(error.response.data);
     }
   }
 );
