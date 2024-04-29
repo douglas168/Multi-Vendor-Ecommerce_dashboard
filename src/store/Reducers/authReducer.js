@@ -12,10 +12,10 @@ export const admin_login = createAsyncThunk(
 
       localStorage.setItem("accessToken", data.token);
       console.log(data);
-      // return fulfillWithValue(data);
+      return fulfillWithValue(data);
     } catch (error) {
       console.log(error.response.data);
-      // return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -28,8 +28,27 @@ export const authReducer = createSlice({
     loader: false,
     userInfo: "",
   },
-  reducers: {},
-  extraReducers: () => {},
+  reducers: {
+    messageClear: (state) => {
+      state.successMessage = null;
+      state.errorMessage = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(admin_login.pending, (state, { payload }) => {
+        state.loader = true;
+      })
+      .addCase(admin_login.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.message;
+      })
+      .addCase(admin_login.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.successMessage = payload.message;
+      });
+  },
 });
 
+export const { messageClear } = authReducer.actions;
 export default authReducer.reducer;
